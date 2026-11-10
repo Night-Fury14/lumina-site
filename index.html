@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina | Web Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050505',
+                        lightBg: '#f8fafc',
+                        brandPrimary: '#10b981', 
+                        brandSecondary: '#3b82f6', 
+                    },
+                    animation: {
+                        'blob': 'blob 12s infinite',
+                        'text-shimmer': 'text-shimmer 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        'text-shimmer': {
+                            '0%': { backgroundPosition: '0% 50%' },
+                            '100%': { backgroundPosition: '100% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { transition: background-color 0.5s ease; }
+        [data-ua] { transition: opacity 0.3s ease-in-out; }
+        .gradient-text-animated {
+            background: linear-gradient(to right, #10b981, #3b82f6, #10b981);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: text-shimmer 3s ease-in-out infinite alternate;
+        }
+        .glass-card {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.4s ease;
+        }
+        .glass-card:hover { transform: translateY(-5px); }
+        .nav-glass {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .hidden-project {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .hidden-project.show { display: block; opacity: 1; transform: scale(1); }
+    /* Переливаючий фон (Shimmering Background) */
+        .bg-flowing {
+            background: linear-gradient(-45deg, #050505, #0f172a, #064e3b, #170f2e);
+            background-size: 400% 400%;
+            animation: gradient-flow 15s ease infinite;
+        }
+        html:not(.dark) .bg-flowing {
+            background: linear-gradient(-45deg, #f8fafc, #e0e7ff, #d1fae5, #fce7f3);
+            background-size: 400% 400%;
+        }
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+	</style>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-gray-800 dark:text-gray-200 font-sans antialiased selection:bg-brandPrimary selection:text-white relative overflow-x-hidden min-h-screen">
+
+    <!-- ФОНОВІ АНІМАЦІЇ (Переливаючий градієнт) -->
+    <div class="fixed inset-0 z-[-1] w-full h-full bg-flowing transition-all duration-700"></div>
+
+    <!-- НАВІГАЦІЯ (Ідеально вирівняна) -->
+    <nav class="fixed w-full z-50 nav-glass bg-white/60 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 rounded-b-3xl">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
+            
+            <!-- Логотип та Назва -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brandPrimary to-brandSecondary flex items-center justify-center shadow-lg">
+                    <!-- SVG Логотип (Lumina / Світло / Код) -->
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <div class="text-2xl font-black tracking-tight text-gray-900 dark:text-white transition-colors">
+                    Lumina<span class="text-brandPrimary">.</span>
+                </div>
+            </div>
+            
+            <!-- Меню (Центр) -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium h-full">
+                <a href="#services" class="text-gray-600 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary transition-colors duration-300" data-ua="Послуги" data-en="Services">Послуги</a>
+                <a href="#portfolio" class="text-gray-600 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary transition-colors duration-300" data-ua="Роботи" data-en="Works">Роботи</a>
+                <a href="#contact" class="text-gray-600 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary transition-colors duration-300" data-ua="Контакти" data-en="Contact">Контакти</a>
+            </div>
+
+            <!-- Права частина (Мова + Лампочка) -->
+            <div class="flex items-center gap-6 h-full relative">
+                
+                <!-- Перемикач мови -->
+                <button id="langToggle" class="h-9 px-4 flex items-center justify-center text-sm font-bold bg-white dark:bg-white/5 rounded-full border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white hover:border-brandPrimary hover:text-brandPrimary transition-all duration-300">
+                    EN
+                </button>
+                
+               <!-- Мінімалістичний шнурок для зміни теми -->
+                <div class="relative h-full w-10 flex justify-center cursor-pointer group select-none" id="themeToggleContainer">
+                    <!-- Кріплення -->
+                    <div class="absolute top-0 w-6 h-1.5 bg-gray-300 dark:bg-gray-800 rounded-b-sm shadow-inner z-10 transition-colors"></div>
+                    
+                    <!-- Група мотузки та кільця -->
+                    <div id="cordGroup" class="absolute top-1 flex flex-col items-center origin-top transition-transform duration-300">
+                        <div class="w-[2px] h-10 bg-gray-400 dark:bg-gray-600 group-hover:bg-brandPrimary transition-colors"></div>
+                        <!-- Кільце для тяги -->
+                        <div class="w-4 h-4 border-[3px] border-gray-400 dark:border-gray-600 group-hover:border-brandPrimary rounded-full transition-colors mt-[-1px]"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Головна секція -->
+    <header class="pt-40 pb-24 px-4 text-center max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[90vh]">
+        <div class="fade-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 dark:bg-white/5 border border-brandPrimary/30 text-brandPrimary text-sm mb-8 backdrop-blur-sm shadow-sm dark:shadow-none">
+            <span class="w-2 h-2 rounded-full bg-brandPrimary animate-pulse shadow-[0_0_10px_#10b981]"></span>
+            <span data-ua="Готовий до нових проектів" data-en="Available for new projects">Готовий до нових проектів</span>
+        </div>
+        
+        <h1 class="fade-up text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight leading-tight delay-100 transition-colors">
+            <span data-ua="Конверсійні" data-en="High-converting">Конверсійні</span><br> 
+            <span class="gradient-text-animated" data-ua="веб-інтерфейси" data-en="web interfaces">веб-інтерфейси</span>
+        </h1>
+        
+        <p class="fade-up text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto delay-200 transition-colors" data-ua="Я розробляю сайти, які не просто гарно виглядають, а продають ваші послуги. Сучасний Frontend, преміальний дизайн та швидка робота." data-en="I build sites that don't just look good, but sell your services. Modern Frontend, premium design, and fast performance.">
+            Я розробляю сайти, які не просто гарно виглядають, а продають ваші послуги. Сучасний Frontend, преміальний дизайн та швидка робота.
+        </p>
+        
+        <div class="fade-up flex flex-col sm:flex-row gap-4 delay-300">
+            <a href="#contact" class="inline-flex justify-center items-center gap-2 bg-brandPrimary text-white dark:text-darkBg font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]" data-ua="Обговорити проект" data-en="Discuss project">
+                Обговорити проект <i class="ph ph-arrow-right font-bold"></i>
+            </a>
+            <a href="#portfolio" class="inline-flex justify-center items-center gap-2 bg-white/60 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 hover:bg-gray-50 dark:hover:bg-white/10" data-ua="Дивитись роботи" data-en="View works">
+                Дивитись роботи
+            </a>
+        </div>
+    </header>
+
+    <!-- Послуги -->
+    <section id="services" class="py-24 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="fade-up text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors" data-ua="Що я роблю" data-en="What I do">Що я роблю</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-brandPrimary to-brandSecondary mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="fade-up glass-card bg-white/60 dark:bg-white/5 p-8 rounded-3xl group border border-gray-200 dark:border-white/5 hover:border-brandPrimary/30 hover:shadow-xl dark:hover:shadow-[0_10px_40px_-10px_rgba(16,185,129,0.15)] shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-brandPrimary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-brandPrimary/20">
+                        <i class="ph ph-rocket-launch text-3xl text-brandPrimary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors" data-ua="Landing Pages" data-en="Landing Pages">Landing Pages</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed transition-colors" data-ua="Сайти, створені за законами маркетингу. Максимальна конверсія відвідувачів у клієнтів." data-en="Sites built on marketing laws. Maximum conversion of visitors into clients.">Сайти, створені за законами маркетингу. Максимальна конверсія відвідувачів у клієнтів.</p>
+                </div>
+                <div class="fade-up glass-card bg-white/60 dark:bg-white/5 p-8 rounded-3xl group delay-100 border border-gray-200 dark:border-white/5 hover:border-brandSecondary/30 hover:shadow-xl dark:hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.15)] shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-brandSecondary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-brandSecondary/20">
+                        <i class="ph ph-storefront text-3xl text-brandSecondary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors" data-ua="Бізнес Сайти" data-en="Business Sites">Бізнес Сайти</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed transition-colors" data-ua="Преміальне представлення вашої компанії онлайн. Викликає довіру з першої секунди." data-en="Premium online representation of your company. Builds trust from the first second.">Преміальне представлення вашої компанії онлайн. Викликає довіру з першої секунди.</p>
+                </div>
+                <div class="fade-up glass-card bg-white/60 dark:bg-white/5 p-8 rounded-3xl group delay-200 border border-gray-200 dark:border-white/5 hover:border-teal-400/30 hover:shadow-xl dark:hover:shadow-[0_10px_40px_-10px_rgba(45,212,191,0.15)] shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-teal-500/20">
+                        <i class="ph ph-device-mobile-camera text-3xl text-teal-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 transition-colors" data-ua="Mobile First" data-en="Mobile First">Mobile First</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed transition-colors" data-ua="Понад 70% трафіку йде зі смартфонів. Ваші сайти будуть літати на будь-якому пристрої." data-en="Over 70% of traffic comes from smartphones. Your sites will fly on any device.">Понад 70% трафіку йде зі смартфонів. Ваші сайти будуть літати на будь-якому пристрої.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Портфоліо -->
+    <section id="portfolio" class="py-24 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="fade-up text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors" data-ua="Останні Проекти" data-en="Recent Projects">Останні Проекти</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-brandPrimary to-brandSecondary mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8" id="projectsGrid">
+                <div class="fade-up glass-card bg-white/60 dark:bg-white/5 rounded-3xl overflow-hidden group border border-gray-200 dark:border-white/5 hover:border-brandPrimary/30 hover:shadow-xl dark:hover:shadow-[0_10px_40px_-10px_rgba(16,185,129,0.15)] shadow-sm">
+                    <div class="h-56 bg-gray-100 dark:bg-white/5 flex items-center justify-center relative overflow-hidden transition-colors">
+                        <div class="absolute inset-0 bg-gradient-to-br from-brandPrimary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <span class="text-gray-400 dark:text-white/30 font-bold tracking-widest uppercase text-2xl group-hover:scale-110 transition-transform duration-500">Project 1</span>
+                        <div class="absolute bottom-4 left-4 flex gap-2">
+                            <span class="bg-white/80 dark:bg-black/60 backdrop-blur-sm text-xs px-3 py-1.5 rounded-lg text-brandPrimary border border-brandPrimary/20">HTML5</span>
+                            <span class="bg-white/80 dark:bg-black/60 backdrop-blur-sm text-xs px-3 py-1.5 rounded-lg text-blue-500 border border-blue-400/20">Tailwind</span>
+                        </div>
+                    </div>
+                    <div class="p-8 border-t border-gray-200 dark:border-white/5 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brandPrimary transition-colors" data-ua="Сайт Кав'ярні" data-en="Coffee Shop Site">Сайт Кав'ярні</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm transition-colors" data-ua="Лендінг для локального бізнесу. Акцент на атмосферу та меню." data-en="Landing page for local business. Focus on atmosphere and menu.">Лендінг для локального бізнесу. Акцент на атмосферу та меню.</p>
+                    </div>
+                </div>
+
+                <div class="fade-up glass-card bg-white/60 dark:bg-white/5 rounded-3xl overflow-hidden group delay-100 border border-gray-200 dark:border-white/5 hover:border-brandSecondary/30 hover:shadow-xl dark:hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.15)] shadow-sm">
+                    <div class="h-56 bg-gray-100 dark:bg-white/5 flex items-center justify-center relative overflow-hidden transition-colors">
+                        <div class="absolute inset-0 bg-gradient-to-br from-brandSecondary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <span class="text-gray-400 dark:text-white/30 font-bold tracking-widest uppercase text-2xl group-hover:scale-110 transition-transform duration-500">Project 2</span>
+                        <div class="absolute bottom-4 left-4 flex gap-2">
+                            <span class="bg-white/80 dark:bg-black/60 backdrop-blur-sm text-xs px-3 py-1.5 rounded-lg text-brandSecondary border border-brandSecondary/20">JS</span>
+                            <span class="bg-white/80 dark:bg-black/60 backdrop-blur-sm text-xs px-3 py-1.5 rounded-lg text-blue-500 border border-blue-400/20">Tailwind</span>
+                        </div>
+                    </div>
+                    <div class="p-8 border-t border-gray-200 dark:border-white/5 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brandSecondary transition-colors" data-ua="Портфоліо Фотографа" data-en="Photographer Portfolio">Портфоліо Фотографа</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm transition-colors" data-ua="Мінімалістична галерея робіт з плавними анімаціями." data-en="Minimalist works gallery with smooth animations.">Мінімалістична галерея робіт з плавними анімаціями.</p>
+                    </div>
+                </div>
+
+                <!-- Приховані проекти -->
+                <div class="hidden-project glass-card bg-white/60 dark:bg-white/5 rounded-3xl overflow-hidden group border border-gray-200 dark:border-white/5 hover:shadow-xl shadow-sm">
+                    <div class="h-56 bg-gray-100 dark:bg-white/5 flex items-center justify-center relative transition-colors">
+                        <span class="text-gray-400 dark:text-white/30 font-bold tracking-widest uppercase text-2xl">Project 3</span>
+                    </div>
+                    <div class="p-8 border-t border-gray-200 dark:border-white/5 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 transition-colors" data-ua="Корпоративний Блог" data-en="Corporate Blog">Корпоративний Блог</h3>
+                    </div>
+                </div>
+                <div class="hidden-project glass-card bg-white/60 dark:bg-white/5 rounded-3xl overflow-hidden group border border-gray-200 dark:border-white/5 hover:shadow-xl shadow-sm">
+                    <div class="h-56 bg-gray-100 dark:bg-white/5 flex items-center justify-center relative transition-colors">
+                        <span class="text-gray-400 dark:text-white/30 font-bold tracking-widest uppercase text-2xl">Project 4</span>
+                    </div>
+                    <div class="p-8 border-t border-gray-200 dark:border-white/5 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 transition-colors" data-ua="Промо Додатка" data-en="App Promo">Промо Додатка</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center fade-up">
+                <button id="loadMoreBtn" class="bg-white/80 dark:bg-white/5 text-gray-800 dark:text-white font-bold py-3 px-8 rounded-full border border-gray-200 dark:border-transparent hover:border-brandPrimary hover:text-brandPrimary dark:hover:border-brandPrimary dark:hover:text-brandPrimary transition-all duration-300 shadow-sm dark:shadow-none">
+                    <span data-ua="Показати всі роботи" data-en="Show all works">Показати всі роботи</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакти -->
+    <section id="contact" class="py-24 px-4 max-w-5xl mx-auto">
+        <div class="fade-up bg-white/80 dark:bg-white/5 backdrop-blur-md p-10 md:p-16 rounded-[2.5rem] text-center border border-gray-200 dark:border-brandPrimary/20 relative overflow-hidden transition-colors shadow-lg dark:shadow-none">
+            
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-6 relative z-10 transition-colors" data-ua="Маєте ідею?" data-en="Have an idea?">Маєте ідею?</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-10 max-w-lg mx-auto text-lg relative z-10 transition-colors" data-ua="Напишіть мені в Telegram. Ми обговоримо ваш проект, і я запропоную найкраще рішення для вашого бізнесу." data-en="Write to me on Telegram. We will discuss your project and I will offer the best solution for your business.">
+                Напишіть мені в Telegram. Ми обговоримо ваш проект, і я запропоную найкраще рішення для вашого бізнесу.
+            </p>
+            
+            <a href="https://t.me/TVOY_BOT_USERNAME" target="_blank" class="relative z-10 inline-flex items-center gap-3 bg-brandSecondary text-white font-bold py-4 px-10 rounded-full hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 mb-12 shadow-[0_10px_20px_rgba(59,130,246,0.3)]">
+                <i class="ph ph-telegram-logo text-3xl"></i>
+                <span class="text-lg" data-ua="Написати в Telegram" data-en="Message on Telegram">Написати в Telegram</span>
+            </a>
+
+            <!-- БЛОК ОПЛАТИ -->
+            <div class="mt-8 relative z-10 text-center">
+                <p class="text-gray-500 dark:text-gray-500 text-sm tracking-widest uppercase mb-6 transition-colors" data-ua="Приймаю оплату зручним для вас способом:" data-en="Accepting payments in a convenient way:">Приймаю оплату зручним для вас способом:</p>
+                
+                <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 text-gray-700 dark:text-gray-300 transition-colors">
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-credit-card text-2xl text-brandSecondary"></i>
+                        <span class="font-bold tracking-wide">VISA</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-credit-card text-2xl text-orange-500"></i>
+                        <span class="font-bold tracking-wide">Mastercard</span>
+                    </div>
+                    <div class="hidden sm:block w-px h-6 bg-gray-300 dark:bg-gray-700 transition-colors"></div>
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-currency-btc text-2xl text-yellow-500"></i>
+                        <span class="font-bold tracking-wide">Bitcoin</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-currency-eth text-2xl text-brandSecondary"></i>
+                        <span class="font-bold tracking-wide">Ethereum</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-coin text-2xl text-brandPrimary"></i>
+                        <span class="font-bold tracking-wide">USDT / TON</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Підвал -->
+    <footer class="border-t border-gray-200 dark:border-white/5 py-10 mt-10 relative z-10 bg-white/50 dark:bg-darkBg/50 backdrop-blur-md transition-colors">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-2xl font-bold tracking-tighter text-gray-400 dark:text-white/50 transition-colors">Lumina<span class="text-brandPrimary">.</span></div>
+            
+            <!-- Інформація про методи передачі проекту -->
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+                <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm bg-gray-100 dark:bg-white/5 px-4 py-2 rounded-full border border-gray-200 dark:border-white/5 transition-colors shadow-sm dark:shadow-none cursor-default">
+                    <i class="ph ph-git-branch text-xl"></i>
+                    <span data-ua="Код через GitHub" data-en="Code via GitHub">Код через GitHub</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm bg-gray-100 dark:bg-white/5 px-4 py-2 rounded-full border border-gray-200 dark:border-white/5 transition-colors shadow-sm dark:shadow-none cursor-default">
+                    <i class="ph ph-rocket-launch text-xl text-brandSecondary"></i>
+                    <span data-ua="Публікація під ключ (Netlify)" data-en="Turnkey deployment (Netlify)">Публікація під ключ (Netlify)</span>
+                </div>
+            </div>
+            <p class="text-gray-500 text-sm">© 2026 Web Development.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Анімація появи елементів при скролі
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Логіка перемикання мови з плавною анімацією (Fade)
+        let currentLang = 'ua';
+        const langToggle = document.getElementById('langToggle');
+        
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'ua' ? 'en' : 'ua';
+            langToggle.textContent = currentLang === 'ua' ? 'EN' : 'UA';
+            
+            const transEls = document.querySelectorAll('[data-ua]');
+            
+            transEls.forEach(el => { el.style.opacity = '0'; });
+            
+            setTimeout(() => {
+                transEls.forEach(el => {
+                    el.innerHTML = el.getAttribute(`data-${currentLang}`);
+                    el.style.opacity = '1';
+                });
+            }, 300);
+        });
+
+        // Кнопка "Показати більше"
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const hiddenProjects = document.querySelectorAll('.hidden-project');
+        
+        loadMoreBtn.addEventListener('click', () => {
+            hiddenProjects.forEach((project, index) => {
+                project.style.display = 'block';
+                setTimeout(() => project.classList.add('show'), 50 + (index * 100));
+            });
+            loadMoreBtn.style.display = 'none';
+        });
+
+        // Інтерактивна Лампочка та Зміна Теми (Dark/Light)
+      // Інтерактивний шнурок та Зміна Теми (Dark/Light)
+        const themeContainer = document.getElementById('themeToggleContainer');
+        const cordGroup = document.getElementById('cordGroup');
+        const htmlElement = document.documentElement;
+        
+        themeContainer.addEventListener('click', () => {
+            // Анімація натягу шнурка
+            cordGroup.style.transform = 'scaleY(1.6)';
+            
+            setTimeout(() => {
+                // Повернення шнурка
+                cordGroup.style.transform = 'scaleY(1)';
+                // Зміна теми
+                htmlElement.classList.toggle('dark');
+            }, 150);
+        });
+    </script>
+</body>
+</html>"""
+
+// замфнити анфмацію на фоні на щось переливаючися та прибрати лампу з нитки 
